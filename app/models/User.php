@@ -12,6 +12,13 @@ class User extends \Phalcon\Mvc\Model
      */
     public $id;
 
+     /**
+     *
+     * @var string
+     * @Column(type="string", length=64, nullable=false)
+     */
+    public $cabang_id;
+
     /**
      *
      * @var string
@@ -31,7 +38,7 @@ class User extends \Phalcon\Mvc\Model
      */
     public function initialize()
     {
-        $this->setSchema("phalcon-magelang");
+        $this->setSchema("qodr");
     }
 
     /**
@@ -41,7 +48,7 @@ class User extends \Phalcon\Mvc\Model
      */
     public function getSource()
     {
-        return 'user';
+        return 'ref_user';
     }
 
     /**
@@ -66,4 +73,68 @@ class User extends \Phalcon\Mvc\Model
         return parent::findFirst($parameters);
     }
 
+    public function getDataUser()
+    {
+        $requestData = $_REQUEST;
+        $requestSearch = strtoupper($requestData['search']['value']);
+
+        $columns = array(
+            0 => 'cabang_id',
+            1 => 'username',
+            2 => 'password',
+            3 => 'type',
+        );
+
+        $sql = "SELECT * FROM User";
+        $query = $this->modelsManager->executeQuery($sql);
+        $totalData = count($query);
+        $totalFiltered = $totalData;  
+
+        if (!empty($requestSearch)) {
+        //function mencari data user
+            $sql = "SELECT * FROM User WHERE username LIKE '%".$requestSearch."%'";
+            $sql.= "OR cabang_id LIKE '%".$requestSearch."%'";
+            $sql.= "OR type LIKE '%".$requestSearch."%'";
+            $query = $this->modelsManager->executeQuery($sql); 
+            $totalFiltered = count($query);
+
+            $sql.=" ORDER BY ". $columns[$requestData['order'][0]['column']]."   ".$requestData['order'][0]['dir']."   LIMIT ".$requestData['start']." ,".$requestData['length']."   ";
+            $query = $this->modelsManager->executeQuery($sql); 
+        } else {
+        //function menampilkan seluruh data
+            $sql = "SELECT * FROM User";
+            $query = $this->modelsManager->executeQuery($sql); 
+        }
+        
+        $data = array();
+        $no = $requestData['start']+1;
+
+        foreach ($query as $key => $value) {
+            $dataUser = array();
+            $dataUser[] = $no;
+            $dataUser[] = $value->cabang_id;
+            $dataUser[] = $value->username;
+            $dataUser[] = $value->password;
+            $dataUser[] = $value->type;
+            $dataUser[] = '
+               <button type="button" class="btn btn-warning" data-toggle="modal" data-target="#modal-default" 
+               onclick="return send_data_edit(\''.$value->id.'\');">Edit</button>
+               <button type="button" class="btn btn-danger" data-toggle="modal" data-target="#modal-delete"
+                onclick="return send_data_delete(\''.$value->id.'\');">Delete</button>
+            ';
+
+            $data[] = $dataUser;
+            $no++;
+        }
+
+                
+        $json_data = array(
+			"draw"            => intval( $requestData['draw'] ),  
+			"recordsTotal"    => intval( $totalData ),
+			"recordsFiltered" => intval( $totalFiltered ), 
+			"data"            => $data
+		);
+        
+        return $json_data; 
+    }
 }
