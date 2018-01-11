@@ -1,12 +1,16 @@
 <?php
 use Phalcon\Mvc\view;
-
+use Phalcon\Security;
 
 class UserController extends \Phalcon\Mvc\Controller
 {
 
     public function indexAction()
     {
+        if (!$this->session->has('auth')) {
+            $this->response->redirect('login');
+        }
+        
         $data_user = User::find();
         $this->view->data_user = $data_user;
     }
@@ -33,7 +37,7 @@ class UserController extends \Phalcon\Mvc\Controller
                 'id' => $id,
                 'cabang_id' => $cabang_id,
                 'username' => $username,
-                'password' => $password,
+                'password' => $this->security->hash($password),
                 'type' => $type
             ));
 
@@ -72,7 +76,7 @@ class UserController extends \Phalcon\Mvc\Controller
                 'id' => $id,
                 'cabang_id' => $cabang_id,
                 'username' => $username,
-                'password' => $password,
+                'password' => $this->security->hash($password),
                 'type' => $type
             ));
 
@@ -126,5 +130,11 @@ class UserController extends \Phalcon\Mvc\Controller
         $this->view->data_user = User::find();
         $this->view->pick("user/list");
         $this->view->setRenderLevel(View::LEVEL_ACTION_VIEW);
+    }
+
+    public function getDataAction($id)
+    {
+        $data_user = User::findFirst("id='$id'");
+        die(json_encode($data_user));
     }
 }

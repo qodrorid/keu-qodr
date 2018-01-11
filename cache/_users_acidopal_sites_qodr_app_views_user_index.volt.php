@@ -125,7 +125,7 @@
 </div>
 
 <!-- DataTables -->
-{{ javascript_include("assets/bower_components/datatables.net/js/jquery.dataTables.min.js")}} {{ javascript_include("assets/bower_components/datatables.net-bs/js/dataTables.bootstrap.min.js")}}
+<?= $this->tag->javascriptInclude('assets/bower_components/datatables.net/js/jquery.dataTables.min.js') ?> <?= $this->tag->javascriptInclude('assets/bower_components/datatables.net-bs/js/dataTables.bootstrap.min.js') ?>
 
 <script>
     function send_data_add() {
@@ -140,7 +140,7 @@
         $.ajax({
             method: "POST",
             dataType: "json",
-            url: "{{url('user/addUser')}}",
+            url: "<?= $this->url->get('user/addUser') ?>",
             data: $('form.addUser').serialize(),
             success: function(res) {
                 new PNotify({
@@ -166,7 +166,7 @@
         $.ajax({
             method: "POST",
             dataType: "json",
-            url: "{{url('user/getData')}}/" + id,
+            url: "<?= $this->url->get('user/getData') ?>/" + id,
             data: $('form.addUser').serialize(),
             success: function(res) {
                 $('input[name=cabang_id]').val(res.cabang_id);
@@ -182,7 +182,7 @@
         $.ajax({
             method: "POST",
             dataType: "json",
-            url: "{{url('user/editUser')}}",
+            url: "<?= $this->url->get('user/editUser') ?>",
             data: $('form.addUser').serialize(),
             success: function(res) {
                 new PNotify({
@@ -210,7 +210,7 @@
         $.ajax({
             method: "POST",
             dataType: "json",
-            url: "{{url('user/deleteUser')}}",
+            url: "<?= $this->url->get('user/deleteUser') ?>",
             data: $('form.deleteUser').serialize(),
             success: function(res) {
                 new PNotify({
@@ -227,7 +227,7 @@
     function listUser() {
         $.ajax({
             method: "GET",
-            url: "{{ url('user/listUser')}}",
+            url: "<?= $this->url->get('user/listUser') ?>",
             dataType: "html",
             success: function(res) {
                 $('.listUser').html(res);

@@ -27,6 +27,7 @@ $di->setShared('url', function () {
     return $url;
 });
 
+
 /**
  * Setting up the view component
  */
@@ -34,31 +35,28 @@ $di->setShared('view', function () {
     $config = $this->getConfig();
 
     $view = new View();
-    $view->setDI($this);
+
     $view->setViewsDir($config->application->viewsDir);
 
-    $view->registerEngines([
-        '.volt' => function ($view) {
-            $config = $this->getConfig();
+    $view->registerEngines(array(
+        '.volt' => function ($view, $di) use ($config) {
 
-            $volt = new VoltEngine($view, $this);
+            $volt = new VoltEngine($view, $di);
 
-            if ($config->settings->development == false) {
-                $volt->setOptions([
-                    'compiledPath' => $config->application->cacheDir,
-                    'compiledSeparator' => '_',
-                    'compileAlways' => true
-                ]);
-            }
+            $volt->setOptions(array(
+                'compiledPath' => $config->application->cacheDir,
+                'compiledSeparator' => '_',
+                'compileAlways' => false
+                // 'compileAlways' => true
+            ));
+
             return $volt;
         },
-        '.phtml' => PhpEngine::class
-
-    ]);
+        '.phtml' => 'Phalcon\Mvc\View\Engine\Php'
+    ));
 
     return $view;
 });
-
 /**
  * Database connection is created based in the parameters defined in the configuration file
  */

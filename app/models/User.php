@@ -79,10 +79,12 @@ class User extends \Phalcon\Mvc\Model
         $requestSearch = strtoupper($requestData['search']['value']);
 
         $columns = array(
-            0 => 'cabang_id',
-            1 => 'username',
-            2 => 'password',
-            3 => 'type',
+            0 => 'DT_RowId',
+            1 => 'cabang_id',
+            2 => 'username',
+            3 => 'password',
+            4 => 'type',
+            5 => 'action',
         );
 
         $sql = "SELECT * FROM User";
@@ -111,12 +113,13 @@ class User extends \Phalcon\Mvc\Model
 
         foreach ($query as $key => $value) {
             $dataUser = array();
-            $dataUser[] = $no;
-            $dataUser[] = $value->cabang_id;
-            $dataUser[] = $value->username;
-            $dataUser[] = $value->password;
-            $dataUser[] = $value->type;
-            $dataUser[] = '
+            $dataUser['DT_RowID'] = "row_".$value->id;
+            $dataUser['no'] = $no;
+            $dataUser['cabang_id'] = $value->cabang_id;
+            $dataUser['username'] = $value->username;
+            $dataUser['password'] = $value->password;
+            $dataUser['type'] = $value->type;
+            $dataUser['action'] = '
                <button type="button" class="btn btn-warning" data-toggle="modal" data-target="#modal-default" 
                onclick="return send_data_edit(\''.$value->id.'\');">Edit</button>
                <button type="button" class="btn btn-danger" data-toggle="modal" data-target="#modal-delete"
@@ -133,7 +136,8 @@ class User extends \Phalcon\Mvc\Model
 			"recordsTotal"    => intval( $totalData ),
 			"recordsFiltered" => intval( $totalFiltered ), 
 			"data"            => $data
-		);
+        );
+        
         
         return $json_data; 
     }

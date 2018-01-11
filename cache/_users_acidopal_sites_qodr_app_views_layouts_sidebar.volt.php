@@ -8,13 +8,14 @@
                 <img src="../../dist/img/user2-160x160.jpg" class="img-circle" alt="User Image">
             </div>
             <div class="pull-left info">
+               
                 <?php
-                    if($this->session->has("auth")){
-                        $auth = $this->session->get("auth");
-                        $username = $auth['username'];
-                        echo ' <p>'.$username.'</p>';
-                    }
-                 ?>
+                if($this->session->has("auth")){
+                    $auth = $this->session->get("auth");
+                    $username = $auth['username'];
+                    echo ' <p>'.$username.'</p>';
+                }
+            ?>
                 <a href="#"><i class="fa fa-circle text-success"></i> Online</a>
             </div>
         </div>
