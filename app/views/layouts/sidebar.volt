@@ -32,6 +32,22 @@
         <!-- sidebar menu: : style can be found in sidebar.less -->
         <ul class="sidebar-menu" data-widget="tree">
             <li class="header">MAIN NAVIGATION</li>
+            <li class="treeview">
+                <a href="#">
+                  <i class="fa fa-money"></i> <span>Keuangan</span>
+                  <span class="pull-right-container">
+                    <i class="fa fa-angle-left pull-right"></i>
+                  </span>
+                </a>
+                <ul class="treeview-menu" style="display: none;">
+                  <li><a href="keuHarian"><i class="fa fa-circle-o"></i> Harian</a></li>
+                  <li><a href="../index2.html"><i class="fa fa-circle-o"></i> Rekap Harian</a></li>
+                  <li><a href="../index2.html"><i class="fa fa-circle-o"></i> Rekap Bulanan</a></li>
+                  <li><a href="../index2.html"><i class="fa fa-circle-o"></i> Rekap Tahunan</a></li>
+                  <li><a href="../index2.html"><i class="fa fa-circle-o"></i> Rekap Akun</a></li>
+                  <li><a href="../index2.html"><i class="fa fa-circle-o"></i> History</a></li>
+                </ul>
+              </li>
             <li><a href="user"><i class="fa fa-user"></i> <span>User</span></a></li>
         </ul>
     </section>

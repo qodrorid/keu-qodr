@@ -12,7 +12,7 @@ return new \Phalcon\Config([
         'host'        => 'localhost',
         'username'    => 'root',
         'password'    => 'qweasd123',
-        'dbname'      => 'phalcon-magelang',
+        'dbname'      => 'qodr',
         'charset'     => 'utf8',
     ],
     'application' => [
@@ -23,6 +23,7 @@ return new \Phalcon\Config([
         'viewsDir'       => APP_PATH . '/views/',
         'pluginsDir'     => APP_PATH . '/plugins/',
         'libraryDir'     => APP_PATH . '/library/',
+        'helperDir'     => APP_PATH . '/helpers/',
         'cacheDir'       => BASE_PATH . '/cache/',
 
         // This allows the baseUri to be understand project paths that are not in the root directory

@@ -110,3 +110,8 @@ $di->setShared('session', function () {
 
     return $session;
 });
+
+// Helper View
+$di->set('OzanGanteng', function(){
+    return new Helpers();
+});
