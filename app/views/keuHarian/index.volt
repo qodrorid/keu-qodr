@@ -95,7 +95,7 @@
                   <span class="input-group-addon"><i class="fa fa-info-circle"></i></span>
                   <!-- <input type="text" class="form-control" name="akun_id" placeholder="Akun"> -->
                   <select class="form-control">
-                    {{ OzanGanteng.dataAkun()}}
+                    {{ Helper.dataAkun()}}
                 </select>
                 </div>
                 <br>
@@ -117,7 +117,7 @@
                   <span class="input-group-addon"><i class="fa fa-list-ul"></i></span>
                   <!-- <input type="text" class="form-control" name="satuan_barang_id" placeholder="Satuan Barang"> -->
                     <select class="form-control" name="sataun_barang_id">
-                        {{ OzanGanteng.dataSatuanBarang()}}
+                        {{ Helper.dataSatuanBarang()}}
                     </select>
                 </div>
                 <br>

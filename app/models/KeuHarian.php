@@ -116,11 +116,11 @@ class KeuHarian extends \Phalcon\Mvc\Model
     {
         return parent::findFirst($parameters);
     }
-    public function getDataKeuHarian()
+    public function getDataKeuharian()
     {
         $requestData = $_REQUEST;
         // echo "<pre>".print_r($_REQUEST)."</pre>";
-        $requestData = strtoupper($_REQUEST['search']['value']);
+        $requestSearch = strtoupper($_REQUEST['search']['value']);
         $columns = array(
             0 => 'cabang_id',
             1 => 'tanggal',
@@ -135,7 +135,7 @@ class KeuHarian extends \Phalcon\Mvc\Model
             10 => 'keterangan',
             11 => 'pelaku',
         );
-        $sql = "SELECT * FROM KeuHarian";
+        $sql = "SELECT * FROM KeuHarian ";
         $query = $this->modelsManager->executeQuery($sql);
         $totalData = count($query);
         $totalFiltered = $totalData;
@@ -160,7 +160,7 @@ class KeuHarian extends \Phalcon\Mvc\Model
             $totalFiltered = count($query);
             
             $sql.=" ORDER BY ". $columns[$_REQUEST['order'][0]['column']]."   ".$_REQUEST['order'][0]['dir']."   LIMIT ".$_REQUEST['start']." ,".$_REQUEST['length']."   "; 
-            $query = $this->modelManager->executeQuery(sql);
+            $query = $this->modelsManager->executeQuery($sql);
         } else {
             //function menampilkan seluruh data
             $sql = "SELECT * FROM KeuHarian limit $start,$length";
@@ -184,10 +184,86 @@ class KeuHarian extends \Phalcon\Mvc\Model
             $dataKeuHarian[] = $value->pelaku;
             $dataKeuHarian[] = '
             <div class="btn-group-vertical">
-                <button type="button" class="btn btn-warning" data-toggle="modal" data-target="#modal-default" onclick="return send_data_edit(\''.$value->id.'\');">Edit</button>
-                <button type="button" class="btn btn-danger" data-toggle="modal" data-target="#modal-delete" onclick="return send_data_delete(\''.$value->id.'\');">Delete</button>
+                <button type="button" class="btn btn-warning" data-toggle="modal" data-target="#modal-default" 
+                onclick="return send_data_edit(\''.$value->id.'\');">Edit</button>
+                <button type="button" class="btn btn-danger" data-toggle="modal" data-target="#modal-delete" 
+                onclick="return send_data_delete(\''.$value->id.'\');">Delete</button>
             </div>
             ';
+            $data[] = $dataKeuHarian;
+            $no++;
+        }
+        $json_data = array(
+                "draw" => intval($_REQUEST['draw']),
+                "recordsTotal" => intval($totalData),
+                "recordsFiltered" => intval($totalFiltered),
+                "data" => $data,
+        );
+        return $json_data;
+    }
+    public function getDataKeuharian2()
+    {
+        $requestData = $_REQUEST;
+        // echo "<pre>".print_r($_REQUEST)."</pre>";
+        
+        $columns = array(
+            
+            1 => 'tanggal',
+            2 => 'nama_barang',
+            3 => 'akun_id',
+            4 => 'jml_barang',
+            5 => 'harga_satuan',
+            
+            6 => 'total_harga',
+            
+           
+        );
+        
+        $sql = "SELECT * FROM KeuHarian ";
+        $query = $this->modelsManager->executeQuery($sql);
+        $totalData = count($query);
+        $totalFiltered = $totalData;
+        $no = $_REQUEST['start']+1;
+        $start = $_REQUEST['start'];
+        $length = $_REQUEST['length'];
+        if(!empty($requestSearch)) {
+            //function mencari data user
+            $sql = "SELECT * FROM KeuHarian WHERE tanggal LIKE '%".$requestSearch."%'";
+            
+            $sql.= "OR nama_barang LIKE '%".$requestSearch."%'";
+            $sql.= "OR akun_id LIKE '%".$requestSearch."%'";
+            $sql.= "OR jml_barang LIKE '%".$requestSearch."%'";
+            $sql.= "OR harga_satuan LIKE '%".$requestSearch."%'";
+            
+            $sql.= "OR total_harga LIKE '%".$requestSearch."%'";
+            
+            
+            $query = $this->modelsManager->executeQuery($sql);
+            $totalFiltered = count($query);
+            
+            $sql.=" ORDER BY ". $columns[$_REQUEST['order'][0]['column']]."   ".$_REQUEST['order'][0]['dir']."   LIMIT ".$_REQUEST['start']." ,".$_REQUEST['length']."   "; 
+            $query = $this->modelsManager->executeQuery($sql);
+        } else {
+            //function menampilkan seluruh data
+            $sql = "SELECT * FROM KeuHarian limit $start,$length";
+            $query = $this->modelsManager->executeQuery($sql);
+        }
+        $data = array();
+        foreach($query as $key => $value) {
+            $dataKeuHarian = array();
+            $dataKeuHarian[] = $no;
+            
+            $dataKeuHarian[] = $value->tanggal;
+            $dataKeuHarian[] = $value->nama_barang;
+            $dataKeuHarian[] = $value->akun_id;
+            $dataKeuHarian[] = $value->jml_barang;
+            $dataKeuHarian[] = $value->harga_satuan;
+            
+            $dataKeuHarian[] = $value->total_harga;
+            
+            
+            
+            
             $data[] = $dataKeuHarian;
             $no++;
         }

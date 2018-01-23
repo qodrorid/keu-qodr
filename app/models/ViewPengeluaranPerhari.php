@@ -1,22 +1,67 @@
 <?php
-
-class ViewPemasukanPerhari extends \Phalcon\Mvc\Model
+class ViewPengeluaranPerhari extends \Phalcon\Mvc\Model
 {
-
     /**
      *
      * @var string
-     * @Column(type="string", nullable=false)
+     * @Primary
+     * @Column(type="string", length=11, nullable=false)
      */
-    public $Hari;
-
+    public $id;
     /**
      *
-     * @var double
-     * @Column(type="double", length=32, nullable=true)
+     * @var string
+     * @Column(type="string", nullable=true)
      */
-    public $pemasukan;
-
+    public $periode;
+    /**
+     *
+     * @var string
+     * @Column(type="string", length=32, nullable=true)
+     */
+    public $nama_barang;
+    /**
+     *
+     * @var string
+     * @Column(type="string", length=2, nullable=true)
+     */
+    public $akun_id;
+    /**
+     *
+     * @var integer
+     * @Column(type="integer", length=2, nullable=true)
+     */
+    public $jml_barang;
+    /**
+     *
+     * @var integer
+     * @Column(type="integer", length=8, nullable=true)
+     */
+    public $harga_satuan;
+    /**
+     *
+     * @var string
+     * @Column(type="string", length=8, nullable=true)
+     */
+    public $satuan_barang_id;
+    /**
+     *
+     * @var integer
+     * @Column(type="integer", length=11, nullable=true)
+     */
+    public $total_harga;
+    /**
+     *
+     * @var string
+     * @Column(type="string", nullable=true)
+     */
+    public $keterangan;
+    /**
+     *
+     * @var string
+     * @Column(type="string", length=3, nullable=true)
+     */
+    public $cabang_id;
     /**
      * Initialize method for model.
      */
@@ -24,7 +69,6 @@ class ViewPemasukanPerhari extends \Phalcon\Mvc\Model
     {
         $this->setSchema("qodr");
     }
-
     /**
      * Returns table name mapped in the model.
      *
@@ -32,44 +76,38 @@ class ViewPemasukanPerhari extends \Phalcon\Mvc\Model
      */
     public function getSource()
     {
-        return 'view_pemasukan_perhari';
+        return 'view_pengeluaran_perhari';
     }
-
     /**
      * Allows to query a set of records that match the specified conditions
      *
      * @param mixed $parameters
-     * @return ViewPemasukanPerhari[]|ViewPemasukanPerhari
+     * @return ViewPengeluaranPerhari[]|ViewPengeluaranPerhari
      */
     public static function find($parameters = null)
     {
         return parent::find($parameters);
     }
-
     /**
      * Allows to query the first record that match the specified conditions
      *
      * @param mixed $parameters
-     * @return ViewPemasukanPerhari
+     * @return ViewPengeluaranPerhari
      */
     public static function findFirst($parameters = null)
     {
         return parent::findFirst($parameters);
     }
-    public function getDataPemasukan($bulan)
+    public function getDataPengeluaran()
     {
         $requestData = $_REQUEST;
         $requestSearch = strtoupper($requestData['search']['value']);
         $columns = array(
             0 => 'Hari',
-            1 => 'Pemasukan',
+            1 => 'Pengeluaran',
             
         );
-        if (!$bulan) {
-            $sql = "SELECT * FROM ViewPemasukanPerhari";
-        }else{
-            $sql = "SELECT * FROM ViewPemasukanPerhari WHERE month(Hari)='$bulan' ";
-        }
+        $sql = "SELECT * FROM ViewPengeluaranPerhari";
         $query = $this->modelsManager->executeQuery($sql);
         $totalData = count($query);
         $totalFiltered = $totalData;  
@@ -78,9 +116,9 @@ class ViewPemasukanPerhari extends \Phalcon\Mvc\Model
         $length = $requestData['length'];
         if (!empty($requestSearch)) {
             //function mencari data user
-                $sql = "SELECT * FROM ViewPemasukanPerhari WHERE username LIKE '%".$requestSearch."%'";
-                $sql.= "OR cabang_id LIKE '%".$requestSearch."%'";
-                $sql.= "OR type LIKE '%".$requestSearch."%'";
+                $sql = "SELECT * FROM ViewPengeluaranPerhari WHERE Hari LIKE '%".$requestSearch."%'";
+                $sql.= "OR Hari LIKE '%".$requestSearch."%'";
+                $sql.= "OR Pengeluaran LIKE '%".$requestSearch."%'";
                 $query = $this->modelsManager->executeQuery($sql); 
                 $totalFiltered = count($query);
     
@@ -88,13 +126,8 @@ class ViewPemasukanPerhari extends \Phalcon\Mvc\Model
                 $query = $this->modelsManager->executeQuery($sql); 
             } else {
             //function menampilkan seluruh data
-                if (!$bulan) {
-                    $sql = "SELECT * FROM ViewPemasukanPerhari limit $start,$length" ;
-                    $query = $this->modelsManager->executeQuery($sql); 
-                }else{
-                    $sql = "SELECT * FROM ViewPemasukanPerhari WHERE month(Hari)='$bulan' limit $start,$length" ;
-                    $query = $this->modelsManager->executeQuery($sql); 
-                }
+                $sql = "SELECT * FROM ViewPengeluaranPerhari limit $start,$length" ;
+                $query = $this->modelsManager->executeQuery($sql); 
             }
         $data = array();
         
@@ -102,8 +135,10 @@ class ViewPemasukanPerhari extends \Phalcon\Mvc\Model
             $dataUser = array();
             $dataUser[] = $no;
             $dataUser[] = $value->Hari;
-            $dataUser[] = $value->pemasukan;
-          
+            $dataUser[] = $value->Pengeluaran;
+            $dataUser[] ='
+            <button type="button" class="btn btn-warning" data-toggle="modal" data-target="#modal-default" 
+            onclick="return show_data_pengeluaran(\''.$value->Hari.'\');">Edit</button>';
             $data[] = $dataUser;
             $no++;
         }

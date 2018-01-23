@@ -1,21 +1,21 @@
 <?php
 
-class ViewPemasukanPerhari extends \Phalcon\Mvc\Model
+class ViewPerkiraanPemasukanTanggal extends \Phalcon\Mvc\Model
 {
 
     /**
      *
      * @var string
-     * @Column(type="string", nullable=false)
+     * @Column(type="string", length=14, nullable=true)
      */
-    public $Hari;
+    public $tanggal_cair;
 
     /**
      *
      * @var double
      * @Column(type="double", length=32, nullable=true)
      */
-    public $pemasukan;
+    public $penghasilan;
 
     /**
      * Initialize method for model.
@@ -32,14 +32,14 @@ class ViewPemasukanPerhari extends \Phalcon\Mvc\Model
      */
     public function getSource()
     {
-        return 'view_pemasukan_perhari';
+        return 'view_perkiraan_pemasukan_tanggal';
     }
 
     /**
      * Allows to query a set of records that match the specified conditions
      *
      * @param mixed $parameters
-     * @return ViewPemasukanPerhari[]|ViewPemasukanPerhari
+     * @return ViewPerkiraanPemasukanTanggal[]|ViewPerkiraanPemasukanTanggal
      */
     public static function find($parameters = null)
     {
@@ -50,26 +50,23 @@ class ViewPemasukanPerhari extends \Phalcon\Mvc\Model
      * Allows to query the first record that match the specified conditions
      *
      * @param mixed $parameters
-     * @return ViewPemasukanPerhari
+     * @return ViewPerkiraanPemasukanTanggal
      */
     public static function findFirst($parameters = null)
     {
         return parent::findFirst($parameters);
     }
-    public function getDataPemasukan($bulan)
+
+    public function getDataPenghasilan()
     {
         $requestData = $_REQUEST;
         $requestSearch = strtoupper($requestData['search']['value']);
         $columns = array(
-            0 => 'Hari',
-            1 => 'Pemasukan',
+            0 => 'tanggal_cair',
+            1 => 'penghasilan',
             
         );
-        if (!$bulan) {
-            $sql = "SELECT * FROM ViewPemasukanPerhari";
-        }else{
-            $sql = "SELECT * FROM ViewPemasukanPerhari WHERE month(Hari)='$bulan' ";
-        }
+        $sql = "SELECT * FROM ViewPerkiraanPemasukanTanggal";
         $query = $this->modelsManager->executeQuery($sql);
         $totalData = count($query);
         $totalFiltered = $totalData;  
@@ -78,7 +75,7 @@ class ViewPemasukanPerhari extends \Phalcon\Mvc\Model
         $length = $requestData['length'];
         if (!empty($requestSearch)) {
             //function mencari data user
-                $sql = "SELECT * FROM ViewPemasukanPerhari WHERE username LIKE '%".$requestSearch."%'";
+                $sql = "SELECT * FROM ViewPerkiraanPemasukanTanggal WHERE username LIKE '%".$requestSearch."%'";
                 $sql.= "OR cabang_id LIKE '%".$requestSearch."%'";
                 $sql.= "OR type LIKE '%".$requestSearch."%'";
                 $query = $this->modelsManager->executeQuery($sql); 
@@ -88,21 +85,16 @@ class ViewPemasukanPerhari extends \Phalcon\Mvc\Model
                 $query = $this->modelsManager->executeQuery($sql); 
             } else {
             //function menampilkan seluruh data
-                if (!$bulan) {
-                    $sql = "SELECT * FROM ViewPemasukanPerhari limit $start,$length" ;
-                    $query = $this->modelsManager->executeQuery($sql); 
-                }else{
-                    $sql = "SELECT * FROM ViewPemasukanPerhari WHERE month(Hari)='$bulan' limit $start,$length" ;
-                    $query = $this->modelsManager->executeQuery($sql); 
-                }
+                $sql = "SELECT * FROM ViewPerkiraanPemasukanTanggal limit $start,$length" ;
+                $query = $this->modelsManager->executeQuery($sql); 
             }
         $data = array();
         
         foreach ($query as $key => $value) {
             $dataUser = array();
             $dataUser[] = $no;
-            $dataUser[] = $value->Hari;
-            $dataUser[] = $value->pemasukan;
+            $dataUser[] = $value->tanggal_cair;
+            $dataUser[] = $value->penghasilan;
           
             $data[] = $dataUser;
             $no++;

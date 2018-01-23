@@ -112,6 +112,6 @@ $di->setShared('session', function () {
 });
 
 // Helper View
-$di->set('OzanGanteng', function(){
+$di->set('Helper', function(){
     return new Helpers();
 });
