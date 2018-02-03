@@ -42,6 +42,7 @@
                 <ul class="treeview-menu" style="display: none;">
                   <li><a href="keuHarian"><i class="fa fa-circle-o"></i> Harian</a></li>
                   <li><a href="rekapHarian"><i class="fa fa-circle-o"></i> Rekap Harian</a></li>
+                  <li><a href="graphic"><i class="fa fa-circle-o"></i> Graphic</a></li>
                   <li><a href="../index2.html"><i class="fa fa-circle-o"></i> Rekap Bulanan</a></li>
                   <li><a href="../index2.html"><i class="fa fa-circle-o"></i> Rekap Tahunan</a></li>
                   <li><a href="../index2.html"><i class="fa fa-circle-o"></i> Rekap Akun</a></li>

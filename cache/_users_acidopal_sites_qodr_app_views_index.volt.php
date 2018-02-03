@@ -41,6 +41,15 @@
 
 <!-- DataTables -->
 <?= $this->tag->javascriptInclude('assets/bower_components/datatables.net/js/jquery.dataTables.min.js') ?> <?= $this->tag->javascriptInclude('assets/bower_components/datatables.net-bs/js/dataTables.bootstrap.min.js') ?>
+
+<!-- Morris -->
+<!-- Morris.js charts -->
+<?= $this->tag->javascriptInclude('assets/bower_components/raphael/raphael.min.js') ?>
+<?= $this->tag->javascriptInclude('assets/bower_components/morris.js/morris.min.js') ?>
+
+<?= $this->tag->stylesheetLink('assets/bower_components/morris.js/morris.css') ?>
+
+
 </head>
 
 <body class="hold-transition skin-blue sidebar-mini">
@@ -358,6 +367,7 @@
                 <ul class="treeview-menu" style="display: none;">
                   <li><a href="keuHarian"><i class="fa fa-circle-o"></i> Harian</a></li>
                   <li><a href="rekapHarian"><i class="fa fa-circle-o"></i> Rekap Harian</a></li>
+                  <li><a href="graphic"><i class="fa fa-circle-o"></i> Graphic</a></li>
                   <li><a href="../index2.html"><i class="fa fa-circle-o"></i> Rekap Bulanan</a></li>
                   <li><a href="../index2.html"><i class="fa fa-circle-o"></i> Rekap Tahunan</a></li>
                   <li><a href="../index2.html"><i class="fa fa-circle-o"></i> Rekap Akun</a></li>
@@ -398,6 +408,8 @@
 <?= $this->tag->javascriptInclude('assets/dist/js/demo.js') ?>
 <!-- page script -->
 <?= $this->tag->javascriptInclude('assets/pnotify/pnotify.js') ?> <?= $this->tag->javascriptInclude('assets/pnotify/pnotify.buttons.js') ?> <?= $this->tag->javascriptInclude('assets/pnotify/pnotify.nonblock.js') ?>
+
+
     <!-- ./wrapper -->
 </body>
 

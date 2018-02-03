@@ -79,11 +79,11 @@ class User extends \Phalcon\Mvc\Model
         $requestSearch = strtoupper($requestData['search']['value']);
 
         $columns = array(
-            0 => 'DT_RowId',
-            1 => 'cabang_id',
-            2 => 'username',
-            3 => 'password',
-            4 => 'type',
+            0 => 'cabang_id',
+            1 => 'username',
+            2 => 'password',
+            3 => 'type',
+            4 => 'foto_user',
             5 => 'action',
         );
 
@@ -113,13 +113,17 @@ class User extends \Phalcon\Mvc\Model
 
         foreach ($query as $key => $value) {
             $dataUser = array();
-            $dataUser['DT_RowID'] = "row_".$value->id;
-            $dataUser['no'] = $no;
-            $dataUser['cabang_id'] = $value->cabang_id;
-            $dataUser['username'] = $value->username;
-            $dataUser['password'] = $value->password;
-            $dataUser['type'] = $value->type;
-            $dataUser['action'] = '
+            $dataUser[] = $no;
+            $dataUser[] = $value->cabang_id;
+            $dataUser[] = $value->username;
+            $dataUser[] = $value->password;
+            $dataUser[] = $value->type;
+            if (!$value->foto_user) {
+              $dataUser[] = '<img src="img/no_foto_user.png" " height="200px" width="200px">';
+            }else{
+                $dataUser[] = '<img src="'."uploads/".$value->foto_user.'" height="200px" width="200px">';
+            }
+            $dataUser[] = '
                <button type="button" class="btn btn-warning" data-toggle="modal" data-target="#modal-default" 
                onclick="return send_data_edit(\''.$value->id.'\');">Edit</button>
                <button type="button" class="btn btn-danger" data-toggle="modal" data-target="#modal-delete"

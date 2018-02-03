@@ -25,12 +25,18 @@ class UserController extends \Phalcon\Mvc\Controller
     public function addUserAction()
     {
         $user = new User();
-        
-        if ($this->request->isPost()) {
+
+
+        if ($this->request->isPost() && $this->request->hasFiles()) {
             $cabang_id  = $this->request->getPost('cabang_id');
             $username  = $this->request->getPost('username');
             $password = $this->request->getPost('password');
             $type = $this->request->getPost('type');
+            $upload_dir = BASE_PATH . '/public/uploads/';
+            foreach ($this->request->getUploadedFiles() as $file) {
+                $file->moveTo($upload_dir . $file->getName());
+                $foto_user = $file->getName();
+            }
             $id = "ID-".$username;
             
             $user->assign(array(
@@ -38,7 +44,8 @@ class UserController extends \Phalcon\Mvc\Controller
                 'cabang_id' => $cabang_id,
                 'username' => $username,
                 'password' => $this->security->hash($password),
-                'type' => $type
+                'type' => $type,
+                'foto_user' => $foto_user,
             ));
 
             if ($user->save()) {

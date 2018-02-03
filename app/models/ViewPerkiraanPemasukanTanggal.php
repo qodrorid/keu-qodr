@@ -109,4 +109,46 @@ class ViewPerkiraanPemasukanTanggal extends \Phalcon\Mvc\Model
         
         return $json_data; 
     }
+
+    public function getDataGraphic()
+    {
+    
+       $sql = "SELECT * FROM ViewPerkiraanPemasukanTanggal ORDER BY tanggal_cair DESC LIMIT  7" ;
+       $query = $this->modelsManager->executeQuery($sql); 
+
+       $data = array();
+        
+        foreach ($query as $key => $value) {
+            $dataUser = array();
+            $tanggal = str_replace(' ','', $value->tanggal_cair);
+            $dataUser['tanggal'] = $tanggal;
+            $dataUser['nominal'] = $value->penghasilan;
+          
+            $data[] = $dataUser;
+        }
+                
+        return $data; 
+    }
+
+    // public function getDataGraphic()
+    // {
+       
+    //     $sql = "SELECT * FROM ViewPerkiraanPemasukanTanggal limit 5" ;
+    //     $query = $this->modelsManager->executeQuery($sql); 
+
+    //     $data = array();
+        
+    //     foreach ($query as $key => $value) {
+    //         $dataUser = array();
+    //         $tanggal = str_replace(' ', '', $value->tanggal_cair);
+    //         $dataUser['tanggal'] = $tanggal;
+    //         $dataUser['nominal'] = $value->penghasilan;
+          
+    //         $data[] = $dataUser;
+    //     }
+                
+    //     $json_data = $data;
+        
+    //     return $json_data; 
+    // }
 }

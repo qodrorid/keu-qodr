@@ -37,3 +37,11 @@
 
 <!-- DataTables -->
 <?= $this->tag->javascriptInclude('assets/bower_components/datatables.net/js/jquery.dataTables.min.js') ?> <?= $this->tag->javascriptInclude('assets/bower_components/datatables.net-bs/js/dataTables.bootstrap.min.js') ?>
+
+<!-- Morris -->
+<!-- Morris.js charts -->
+<?= $this->tag->javascriptInclude('assets/bower_components/raphael/raphael.min.js') ?>
+<?= $this->tag->javascriptInclude('assets/bower_components/morris.js/morris.min.js') ?>
+
+<?= $this->tag->stylesheetLink('assets/bower_components/morris.js/morris.css') ?>
+

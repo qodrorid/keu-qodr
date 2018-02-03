@@ -12,3 +12,4 @@
 {{ javascript_include("assets/dist/js/demo.js")}}
 <!-- page script -->
 {{ javascript_include("assets/pnotify/pnotify.js")}} {{ javascript_include("assets/pnotify/pnotify.buttons.js")}} {{ javascript_include("assets/pnotify/pnotify.nonblock.js")}}
+
